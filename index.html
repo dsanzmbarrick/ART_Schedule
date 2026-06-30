@@ -1382,7 +1382,7 @@
           throw new Error(result.message || "One or more selected sessions are no longer available.");
         }
         closeConfirmModal();
-        showStatus("Your ART 2026 reservation has been successfully registered. A confirmation email will be sent to the email address on file.", "success");
+        showStatus("Your ART 2026 reservation has been successfully registered. A confirmation email will be sent to the email.", "success");
         state.selectedByDate.clear();
         if (result.data) {
           state.inscripciones = normalizeArray(result.data.inscripciones || state.inscripciones);

@@ -1,0 +1,1610 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ART 2026 | Reservation Form</title>
+  <style>
+    :root {
+      --blue: #00557E;
+      --gold: #A39161;
+      --gray: #979797;
+      --ink: #132231;
+      --text: #333333;
+      --muted: #656565;
+      --soft: #F6F7F6;
+      --line: #E3E5E5;
+      --white: #FFFFFF;
+      --danger: #C62325;
+      --success: #51857A;
+      --shadow: 0 18px 45px rgba(19, 34, 49, 0.13);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(180deg, #eef3f5 0%, var(--soft) 42%, #ffffff 100%);
+      color: var(--text);
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 230px;
+      gap: 30px;
+      align-items: start;
+      min-height: 250px;
+      padding: 32px 34px 30px;
+      background:
+        linear-gradient(90deg, rgba(75, 112, 130, 0) 0%, rgba(255, 255, 255, 0) 56%, rgba(255, 255, 255, 0.78) 82%, rgba(255, 255, 255, 0.95) 100%),
+        linear-gradient(135deg, rgba(75, 112, 130, 0.94) 0%, rgba(0, 85, 126, 0.9) 52%, rgba(151, 151, 151, 0.86) 100%);
+      color: var(--white);
+      border-bottom: 7px solid var(--gold);
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      bottom: -100px;
+      width: 390px;
+      height: 230px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0));
+      transform: rotate(-10deg);
+      pointer-events: none;
+    }
+
+    .hero-main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      margin-bottom: 16px;
+      padding: 0 11px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      max-width: 730px;
+      font-size: 34px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 13px 0 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .hero-side {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+      justify-items: end;
+      align-content: start;
+      min-height: 185px;
+    }
+
+    .admin-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(163, 145, 97, 0.42);
+      border-radius: 10px;
+      background: rgba(19, 34, 49, 0.10);
+      color: var(--gold);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    .admin-btn.active {
+      background: var(--ink);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .support-line {
+      display: block;
+      margin-top: 14px;
+    }
+
+    .logo {
+      width: 168px;
+      height: auto;
+      display: block;
+      margin-top: 42px;
+      filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.18));
+    }
+
+    .content {
+      padding: 30px 34px 34px;
+    }
+
+    .status {
+      display: none;
+      padding: 13px 15px;
+      margin-bottom: 18px;
+      border-left: 5px solid var(--blue);
+      background: #eef6fa;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .status.error {
+      border-left-color: var(--danger);
+      background: #fff0ee;
+    }
+
+    .status.success {
+      border-left-color: var(--success);
+      background: #edf7f4;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(292px, 350px) 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    body.admin-mode .grid {
+      grid-template-columns: 1fr;
+    }
+
+    body.admin-mode .participant-panel,
+    body.admin-mode .actions {
+      display: none;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+      box-shadow: 0 12px 28px rgba(19, 34, 49, 0.06);
+    }
+
+    .participant-panel {
+      padding: 20px;
+      position: sticky;
+      top: 18px;
+    }
+
+    .schedule-panel {
+      padding: 20px;
+      min-width: 0;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .schedule-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .schedule-head .section-title {
+      margin: 0;
+    }
+
+    .admin-note {
+      display: none;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .admin-note.show {
+      display: inline-block;
+    }
+
+    .month-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--soft);
+    }
+
+    .month-tab {
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      box-shadow: 0 4px 10px rgba(19, 34, 49, 0.04);
+    }
+
+    .month-tab.active {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 13px;
+      border: 1px solid #C9CDCF;
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: 15px;
+      outline: none;
+      background: #fbfcfc;
+    }
+
+    .search-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0, 85, 126, 0.14);
+    }
+
+    .results {
+      position: absolute;
+      z-index: 5;
+      top: 49px;
+      left: 0;
+      right: 0;
+      max-height: 260px;
+      overflow: auto;
+      display: none;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: 0 14px 35px rgba(19, 34, 49, 0.14);
+    }
+
+    .result-item {
+      width: 100%;
+      padding: 11px 12px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: var(--white);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .result-item:hover {
+      background: var(--soft);
+    }
+
+    .result-name {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .result-meta {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .person-card {
+      display: none;
+      margin-top: 18px;
+      border-left: 5px solid var(--gold);
+      background: linear-gradient(180deg, #ffffff 0%, var(--soft) 100%);
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .info-row {
+      margin: 0 0 9px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-row strong {
+      color: var(--ink);
+    }
+
+    .summary-box {
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfc;
+    }
+
+    .summary-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .admin-dashboard {
+      display: grid;
+      gap: 18px;
+    }
+
+    .admin-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .kpi-card {
+      min-height: 108px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfc 100%);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(19, 34, 49, 0.06);
+      transition: 0.15s ease;
+    }
+
+    .kpi-card:hover,
+    .kpi-card.active {
+      border-color: var(--blue);
+      box-shadow: 0 12px 28px rgba(0, 85, 126, 0.13);
+      transform: translateY(-1px);
+    }
+
+    .kpi-label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      display: block;
+      margin-top: 9px;
+      color: var(--ink);
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .kpi-sub {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .admin-calendar {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .admin-day-row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 14px;
+      padding: 15px 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .admin-day-row:nth-child(even) {
+      background: #fbfcfc;
+    }
+
+    .admin-day-label {
+      display: grid;
+      gap: 4px;
+      align-content: start;
+    }
+
+    .admin-day-label strong {
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .admin-day-label span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .admin-room-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .admin-room-card {
+      min-height: 94px;
+      padding: 12px;
+      border: 1px solid #C9CDCF;
+      border-radius: 9px;
+      background: #ffffff;
+    }
+
+    .admin-room-card.reserved {
+      border-color: rgba(0, 85, 126, 0.28);
+      background: linear-gradient(180deg, #eef7fb 0%, #ffffff 100%);
+    }
+
+    .admin-room-card.available {
+      border-color: rgba(81, 133, 122, 0.32);
+      background: #f6fbf9;
+    }
+
+    .admin-room-card.inactive {
+      background: #f1f1f1;
+      color: #8a8a8a;
+    }
+
+    .admin-room-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .admin-room-name {
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .admin-pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .admin-room-card.reserved .admin-pill {
+      background: var(--blue);
+      color: #ffffff;
+    }
+
+    .admin-room-card.available .admin-pill {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .admin-person {
+      margin: 0;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .admin-meta {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .month {
+      margin-bottom: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .month-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 15px 18px;
+      background: linear-gradient(90deg, var(--ink), #1d3f55);
+      color: var(--white);
+    }
+
+    .month-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .month-count {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .day-row {
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .day-row:nth-child(even) {
+      background: #fbfcfc;
+    }
+
+    .day-label {
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .empty-state {
+      padding: 20px;
+      border: 1px dashed #C9CDCF;
+      border-radius: 6px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .session-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .session-btn {
+      min-height: 62px;
+      padding: 10px 12px;
+      border: 1px solid #C9CDCF;
+      border-radius: 9px;
+      background: var(--white);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .session-btn:hover {
+      border-color: var(--blue);
+      box-shadow: 0 8px 18px rgba(0, 85, 126, 0.12);
+    }
+
+    .session-btn.selected {
+      border-color: var(--blue);
+      background: linear-gradient(180deg, #edf8fc 0%, #ffffff 100%);
+      box-shadow: inset 0 0 0 2px var(--blue);
+    }
+
+    .session-btn.occupied,
+    .session-btn.inactive {
+      background: #f1f1f1;
+      color: #8a8a8a;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .session-btn .room {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .session-btn .meta {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      color: inherit;
+      opacity: 0.85;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin: 24px -34px -34px;
+      padding: 16px 34px;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    .button {
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .button.secondary {
+      border-color: #C9CDCF;
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(19, 34, 49, 0.58);
+    }
+
+    .modal {
+      width: min(620px, 100%);
+      background: var(--white);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      padding: 20px 22px;
+      background: var(--gray);
+      color: var(--white);
+      border-bottom: 5px solid var(--gold);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .modal-body p {
+      margin: 0 0 14px;
+      line-height: 1.5;
+    }
+
+    .confirm-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .confirm-list li {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .confirm-list li:last-child {
+      border-bottom: 0;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 22px;
+      background: var(--soft);
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 820px) {
+      .page {
+        padding: 14px;
+      }
+
+      .hero,
+      .grid,
+      .day-row,
+      .admin-day-row {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-kpis,
+      .admin-room-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .logo {
+        width: 138px;
+      }
+
+      .hero-side {
+        min-height: auto;
+        justify-items: start;
+      }
+
+      .content {
+        padding: 22px;
+      }
+
+      .participant-panel {
+        position: static;
+      }
+
+      .session-options {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        margin: 22px -22px -22px;
+        padding: 14px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="shell">
+      <header class="hero">
+        <div class="hero-main">
+          <span class="eyebrow">Annual Refresher Training</span>
+          <h1>Reserve your ART 2026 participation dates</h1>
+          <p>
+            Search your profile, select one room per available date, and confirm your reservation.
+            A confirmation email will be sent automatically to your email.
+            <span class="support-line">Support: pvdclmsadmin@barrick.com</span>
+          </p>
+        </div>
+        <div class="hero-side">
+          <button id="adminAccessBtn" class="admin-btn" type="button" title="Admin access" aria-label="Admin access">&#9881;</button>
+          <img class="logo" alt="ART 2026 logo" src="https://raw.githubusercontent.com/dsanzmbarrick/ART_Schedule/7630d99673a17f3f6e80c113b3eacff577b338b9/ex1R3.png">
+        </div>
+      </header>
+
+      <div class="content">
+        <div id="status" class="status"></div>
+
+        <div class="grid">
+          <aside class="panel participant-panel">
+            <h2 class="section-title">Participant Information</h2>
+            <label class="label" for="personSearch">Search your name</label>
+            <div class="search-wrap">
+              <input id="personSearch" class="search-input" type="text" autocomplete="off" placeholder="Type your name...">
+              <div id="personResults" class="results"></div>
+            </div>
+
+            <div id="personCard" class="person-card">
+              <p class="info-row"><strong>Name:</strong> <span id="cardName"></span></p>
+              <p class="info-row"><strong>Email:</strong> <span id="cardEmail"></span></p>
+              <p class="info-row"><strong>Position:</strong> <span id="cardCargo"></span></p>
+              <p class="info-row"><strong>Area:</strong> <span id="cardArea"></span></p>
+            </div>
+
+            <div class="summary-box">
+              <p id="selectionSummary">No reservations selected yet.</p>
+            </div>
+          </aside>
+
+          <section class="panel schedule-panel">
+            <div class="schedule-head">
+              <h2 class="section-title">Available Dates</h2>
+              <span id="adminNote" class="admin-note">Admin view active</span>
+            </div>
+            <div id="monthTabs" class="month-tabs"></div>
+            <div id="schedule"></div>
+          </section>
+        </div>
+
+        <div class="actions">
+          <button id="clearBtn" class="button secondary" type="button">Clear selection</button>
+          <button id="saveBtn" class="button primary" type="button" disabled>Save reservation</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="confirmModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="confirmTitle">Confirm reservation</h2>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage"></p>
+        <ul id="confirmList" class="confirm-list"></ul>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelConfirmBtn" class="button secondary" type="button">No</button>
+        <button id="yesConfirmBtn" class="button primary" type="button">Yes, confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Paste the Power Automate HTTP URLs here after importing/publishing the flows.
+    const FLOW_GET_DATA_URL = "https://defaultc05261c14aae48dcb1f6fde04ad750.d9.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/17d1fff2fa0f4f4daeeb71a1cfd9b33c/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=YYNh1j8vPwAtzV8mZ3fqzFuuTKozRqhgTtS529N6RC4";
+    const FLOW_SUBMIT_URL = "https://defaultc05261c14aae48dcb1f6fde04ad750.d9.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/232de7c14c6f428f809ccf1a736011a0/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rqSXs1o4gy9_nZTY5FRWIRL2fQKGRN16kcVxvKWmmoo";
+
+    const LOGO_URL = "https://raw.githubusercontent.com/dsanzmbarrick/ART_Schedule/7630d99673a17f3f6e80c113b3eacff577b338b9/ex1R3.png";
+
+    const sampleData = {
+      personas: [
+        {
+          Persona_ID: "P001",
+          Nombre_Completo: "Vicioso De Los Santos, Dustral Osmil",
+          Email: "example1@barrick.com",
+          Cargo: "Gerente - Energia",
+          "Área": "PV Energy Management",
+          Activo: "SI"
+        },
+        {
+          Persona_ID: "P002",
+          Nombre_Completo: "Reynoso Rosa, Vanesa Maria",
+          Email: "example2@barrick.com",
+          Cargo: "Gerente - Comunicaciones",
+          "Área": "PV Communications",
+          Activo: "SI"
+        }
+      ],
+      sesiones: [
+        { Sesion_ID: "S001", Fecha: "2026-08-03", Fecha_Key: "2026-08-03", "Día": "Monday", "Salón": "Salon 05", Hora_Inicio: "6:45 A.M.", "Ubicación": "Barrick Academy", Estado_Sesion: "Activa" },
+        { Sesion_ID: "S002", Fecha: "2026-08-03", Fecha_Key: "2026-08-03", "Día": "Monday", "Salón": "Salon 11", Hora_Inicio: "6:45 A.M.", "Ubicación": "Barrick Academy", Estado_Sesion: "Activa" },
+        { Sesion_ID: "S003", Fecha: "2026-08-04", Fecha_Key: "2026-08-04", "Día": "Tuesday", "Salón": "Salon 05", Hora_Inicio: "6:45 A.M.", "Ubicación": "Barrick Academy", Estado_Sesion: "Activa" },
+        { Sesion_ID: "S004", Fecha: "2026-08-04", Fecha_Key: "2026-08-04", "Día": "Tuesday", "Salón": "Salon 11", Hora_Inicio: "6:45 A.M.", "Ubicación": "Barrick Academy", Estado_Sesion: "Activa" }
+      ],
+      inscripciones: [
+        { Inscripcion_ID: "I00001", Persona_ID: "P002", Sesion_ID: "S002", Fecha_Key: "2026-08-03", Estado_Registro: "Confirmada" }
+      ]
+    };
+
+    const state = {
+      personas: [],
+      sesiones: [],
+      inscripciones: [],
+      selectedPerson: null,
+      selectedByDate: new Map(),
+      selectedMonth: "",
+      adminMode: false,
+      adminFilter: "all"
+    };
+
+    const els = {
+      status: document.getElementById("status"),
+      personSearch: document.getElementById("personSearch"),
+      personResults: document.getElementById("personResults"),
+      personCard: document.getElementById("personCard"),
+      cardName: document.getElementById("cardName"),
+      cardEmail: document.getElementById("cardEmail"),
+      cardCargo: document.getElementById("cardCargo"),
+      cardArea: document.getElementById("cardArea"),
+      selectionSummary: document.getElementById("selectionSummary"),
+      adminAccessBtn: document.getElementById("adminAccessBtn"),
+      adminNote: document.getElementById("adminNote"),
+      monthTabs: document.getElementById("monthTabs"),
+      schedule: document.getElementById("schedule"),
+      clearBtn: document.getElementById("clearBtn"),
+      saveBtn: document.getElementById("saveBtn"),
+      modal: document.getElementById("confirmModal"),
+      confirmMessage: document.getElementById("confirmMessage"),
+      confirmList: document.getElementById("confirmList"),
+      cancelConfirmBtn: document.getElementById("cancelConfirmBtn"),
+      yesConfirmBtn: document.getElementById("yesConfirmBtn")
+    };
+
+    document.addEventListener("DOMContentLoaded", init);
+    els.personSearch.addEventListener("input", handlePersonSearch);
+    els.personSearch.addEventListener("focus", handlePersonSearch);
+    els.clearBtn.addEventListener("click", clearSelection);
+    els.saveBtn.addEventListener("click", openConfirmModal);
+    els.adminAccessBtn.addEventListener("click", handleAdminAccess);
+    els.cancelConfirmBtn.addEventListener("click", closeConfirmModal);
+    els.yesConfirmBtn.addEventListener("click", submitReservation);
+    document.addEventListener("click", handleOutsideClick);
+
+    async function init() {
+      showStatus("Loading ART 2026 reservation data...");
+      try {
+        const data = await getReservationData();
+        state.personas = normalizeArray(data.personas).filter(p => String(p.Activo || "").toUpperCase() === "SI");
+        state.sesiones = normalizeArray(data.sesiones);
+        state.inscripciones = normalizeArray(data.inscripciones);
+        ensureSelectedMonth();
+        renderMonthTabs();
+        renderSchedule();
+        showStatus(FLOW_GET_DATA_URL ? "" : "Demo mode: paste the Power Automate URLs in the HTML file to connect live data.");
+      } catch (error) {
+        console.error(error);
+        showStatus("Unable to load live data. Demo data is being displayed for review.", "error");
+        state.personas = sampleData.personas;
+        state.sesiones = sampleData.sesiones;
+        state.inscripciones = sampleData.inscripciones;
+        ensureSelectedMonth();
+        renderMonthTabs();
+        renderSchedule();
+      }
+    }
+
+    async function getReservationData() {
+      if (!FLOW_GET_DATA_URL) return sampleData;
+      const response = await fetch(FLOW_GET_DATA_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "getData", source: "ART2026ReservationForm" })
+      });
+      if (!response.ok) throw new Error("GetData flow failed");
+      return response.json();
+    }
+
+    function handlePersonSearch() {
+      const query = els.personSearch.value.trim().toLowerCase();
+      const matches = state.personas
+        .filter(p => !query || getPersonName(p).toLowerCase().includes(query))
+        .slice(0, 12);
+
+      els.personResults.innerHTML = "";
+      matches.forEach(person => {
+        const btn = document.createElement("button");
+        btn.className = "result-item";
+        btn.type = "button";
+        btn.innerHTML = `
+          <span class="result-name">${escapeHtml(getPersonName(person))}</span>
+          <span class="result-meta">${escapeHtml(person.Cargo || "")} | ${escapeHtml(getArea(person) || "")}</span>
+        `;
+        btn.addEventListener("click", () => selectPerson(person));
+        els.personResults.appendChild(btn);
+      });
+      els.personResults.style.display = matches.length ? "block" : "none";
+    }
+
+    function handleOutsideClick(event) {
+      if (!event.target.closest(".search-wrap")) {
+        els.personResults.style.display = "none";
+      }
+    }
+
+    function selectPerson(person) {
+      state.selectedPerson = person;
+      els.personSearch.value = getPersonName(person);
+      els.personResults.style.display = "none";
+      els.personCard.style.display = "block";
+      els.cardName.textContent = getPersonName(person);
+      els.cardEmail.textContent = person.Email || "Email not available";
+      els.cardCargo.textContent = person.Cargo || "Not available";
+      els.cardArea.textContent = getArea(person) || "Not available";
+      updateSummary();
+    }
+
+    function handleAdminAccess() {
+      if (state.adminMode) {
+        state.adminMode = false;
+        state.adminFilter = "all";
+        showStatus("Admin view has been turned off.");
+        updateAdminControls();
+        ensureSelectedMonth();
+        renderMonthTabs();
+        renderSchedule();
+        return;
+      }
+
+      const password = window.prompt("Enter admin password:");
+      if (password === "0523") {
+        state.adminMode = true;
+        state.adminFilter = "all";
+        showStatus("Admin dashboard is active.", "success");
+        updateAdminControls();
+        ensureSelectedMonth();
+        renderMonthTabs();
+        renderSchedule();
+      } else if (password !== null) {
+        showStatus("Incorrect admin password.", "error");
+      }
+    }
+
+    function updateAdminControls() {
+      document.body.classList.toggle("admin-mode", state.adminMode);
+      els.adminAccessBtn.classList.toggle("active", state.adminMode);
+      els.adminAccessBtn.title = state.adminMode ? "Exit admin view" : "Admin access";
+      els.adminNote.classList.toggle("show", state.adminMode);
+      document.querySelector(".schedule-head .section-title").textContent = state.adminMode ? "Admin Calendar" : "Available Dates";
+    }
+
+    function renderMonthTabs() {
+      els.monthTabs.innerHTML = "";
+      getMonthOptions().forEach(month => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `month-tab ${month.key === state.selectedMonth ? "active" : ""}`;
+        btn.textContent = month.name;
+        btn.addEventListener("click", () => {
+          state.selectedMonth = month.key;
+          renderMonthTabs();
+          renderSchedule();
+        });
+        els.monthTabs.appendChild(btn);
+      });
+    }
+
+    function renderSchedule() {
+      if (state.adminMode) {
+        renderAdminSchedule();
+        return;
+      }
+
+      els.schedule.innerHTML = "";
+      const sessions = state.sesiones
+        .filter(session => state.adminMode || String(session.Estado_Sesion || "").toLowerCase() === "activa")
+        .filter(session => getMonthKey(session.Fecha_Key || dateToKey(session.Fecha)) === state.selectedMonth);
+      const grouped = groupSessions(sessions);
+      let visibleDayCount = 0;
+
+      Object.keys(grouped).forEach(monthLabel => {
+        const month = document.createElement("div");
+        month.className = "month";
+
+        const monthHeader = document.createElement("div");
+        monthHeader.className = "month-header";
+          monthHeader.innerHTML = `
+            <h3>${escapeHtml(monthLabel)}</h3>
+          <span class="month-count">${state.adminMode ? "Admin view" : "Available dates"}</span>
+        `;
+        month.appendChild(monthHeader);
+
+        Object.keys(grouped[monthLabel]).forEach(dateKey => {
+          const sessions = grouped[monthLabel][dateKey].sort((a, b) => String(getSalon(a)).localeCompare(String(getSalon(b))));
+          const fullyReserved = sessions.length > 0 && sessions.every(session => isSessionOccupied(session.Sesion_ID));
+          if (!state.adminMode && fullyReserved) return;
+
+          const row = document.createElement("div");
+          row.className = "day-row";
+          visibleDayCount += 1;
+
+          const label = document.createElement("div");
+          label.className = "day-label";
+          label.textContent = formatShortDate(dateKey);
+          row.appendChild(label);
+
+          const options = document.createElement("div");
+          options.className = "session-options";
+          sessions.forEach(session => {
+            const isOccupied = isSessionOccupied(session.Sesion_ID);
+            const isInactive = String(session.Estado_Sesion || "").toLowerCase() !== "activa";
+            const selected = state.selectedByDate.get(dateKey)?.Sesion_ID === session.Sesion_ID;
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = `session-btn ${isOccupied ? "occupied" : ""} ${isInactive ? "inactive" : ""} ${selected ? "selected" : ""}`;
+            btn.disabled = isOccupied || isInactive;
+            btn.innerHTML = `
+              <span class="room">${escapeHtml(getSalon(session))}</span>
+              <span class="meta">${isOccupied ? "Reserved" : isInactive ? "Inactive" : `${escapeHtml(session.Hora_Inicio || "")} | ${escapeHtml(getLocation(session))}`}</span>
+            `;
+            btn.addEventListener("click", () => toggleSession(session));
+            options.appendChild(btn);
+          });
+          row.appendChild(options);
+          month.appendChild(row);
+        });
+
+        els.schedule.appendChild(month);
+      });
+      if (!visibleDayCount) {
+        els.schedule.innerHTML = `<div class="empty-state">There are no available dates for this month. Please select another month.</div>`;
+      }
+      updateSummary();
+    }
+
+    function renderAdminSchedule() {
+      els.schedule.innerHTML = "";
+      const monthSessions = getSessionsForSelectedMonth();
+      const metrics = getAdminMetrics(monthSessions);
+      const dashboard = document.createElement("div");
+      dashboard.className = "admin-dashboard";
+      dashboard.appendChild(renderAdminKpis(metrics));
+      dashboard.appendChild(renderAdminCalendar(monthSessions, metrics));
+      els.schedule.appendChild(dashboard);
+    }
+
+    function renderAdminKpis(metrics) {
+      const wrap = document.createElement("div");
+      wrap.className = "admin-kpis";
+      const cards = [
+        { key: "all", label: "All Dates", value: metrics.totalDates, sub: "Dates scheduled this month" },
+        { key: "registered", label: "Total Registered", value: metrics.totalRegistered, sub: "Confirmed reservations" },
+        { key: "available", label: "Available Sessions", value: metrics.availableSessions, sub: "Active sessions not reserved" },
+        { key: "empty", label: "Empty Dates", value: metrics.emptyDates, sub: "Dates without any reservation" }
+      ];
+
+      cards.forEach(card => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `kpi-card ${state.adminFilter === card.key ? "active" : ""}`;
+        btn.innerHTML = `
+          <span class="kpi-label">${escapeHtml(card.label)}</span>
+          <span class="kpi-value">${escapeHtml(card.value)}</span>
+          <span class="kpi-sub">${escapeHtml(card.sub)}</span>
+        `;
+        btn.addEventListener("click", () => {
+          state.adminFilter = card.key;
+          renderSchedule();
+        });
+        wrap.appendChild(btn);
+      });
+
+      return wrap;
+    }
+
+    function renderAdminCalendar(monthSessions, metrics) {
+      const calendar = document.createElement("div");
+      calendar.className = "admin-calendar";
+
+      const header = document.createElement("div");
+      header.className = "month-header";
+      header.innerHTML = `
+        <h3>${escapeHtml(formatMonth(`${state.selectedMonth}-01`))}</h3>
+        <span class="month-count">${escapeHtml(getAdminFilterLabel())}</span>
+      `;
+      calendar.appendChild(header);
+
+      const grouped = groupByDate(monthSessions);
+      const visibleDateKeys = Object.keys(grouped)
+        .sort()
+        .filter(dateKey => shouldShowAdminDate(grouped[dateKey]));
+
+      visibleDateKeys.forEach(dateKey => {
+        const sessions = grouped[dateKey].sort((a, b) => String(getSalon(a)).localeCompare(String(getSalon(b))));
+        const row = document.createElement("div");
+        row.className = "admin-day-row";
+        row.innerHTML = `
+          <div class="admin-day-label">
+            <strong>${escapeHtml(formatShortDate(dateKey))}</strong>
+            <span>${escapeHtml(getDayName(dateKey))}</span>
+          </div>
+        `;
+
+        const rooms = document.createElement("div");
+        rooms.className = "admin-room-grid";
+        sessions.forEach(session => rooms.appendChild(renderAdminRoomCard(session)));
+        row.appendChild(rooms);
+        calendar.appendChild(row);
+      });
+
+      if (!visibleDateKeys.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = `No dates match this filter. ${metrics.totalDates ? "Select another card or month." : "Select another month."}`;
+        calendar.appendChild(empty);
+      }
+
+      return calendar;
+    }
+
+    function renderAdminRoomCard(session) {
+      const reservation = getConfirmedReservation(session.Sesion_ID);
+      const person = reservation ? getReservationPerson(reservation) : null;
+      const isInactive = String(session.Estado_Sesion || "").toLowerCase() !== "activa";
+      const status = reservation ? "reserved" : isInactive ? "inactive" : "available";
+      const card = document.createElement("div");
+      card.className = `admin-room-card ${status}`;
+      card.innerHTML = `
+        <div class="admin-room-top">
+          <span class="admin-room-name">${escapeHtml(getSalon(session))}</span>
+          <span class="admin-pill">${reservation ? "Reserved" : isInactive ? "Inactive" : "Available"}</span>
+        </div>
+        ${reservation ? `
+          <p class="admin-person">${escapeHtml(person.name)}</p>
+          <p class="admin-meta">${escapeHtml(person.email)}</p>
+          <p class="admin-meta">${escapeHtml(person.position)}${person.area ? ` | ${escapeHtml(person.area)}` : ""}</p>
+        ` : `
+          <p class="admin-person">${escapeHtml(session.Hora_Inicio || "Time not available")}</p>
+          <p class="admin-meta">${escapeHtml(getLocation(session) || "Location not available")}</p>
+        `}
+      `;
+      return card;
+    }
+
+    function getAdminMetrics(monthSessions) {
+      const grouped = groupByDate(monthSessions);
+      const dateKeys = Object.keys(grouped);
+      const activeSessions = monthSessions.filter(session => String(session.Estado_Sesion || "").toLowerCase() === "activa");
+      const totalRegistered = monthSessions.filter(session => isSessionOccupied(session.Sesion_ID)).length;
+      const availableSessions = activeSessions.filter(session => !isSessionOccupied(session.Sesion_ID)).length;
+      const emptyDates = dateKeys.filter(dateKey => !grouped[dateKey].some(session => isSessionOccupied(session.Sesion_ID))).length;
+
+      return {
+        totalDates: dateKeys.length,
+        totalRegistered,
+        availableSessions,
+        emptyDates
+      };
+    }
+
+    function shouldShowAdminDate(sessions) {
+      const hasReservation = sessions.some(session => isSessionOccupied(session.Sesion_ID));
+      const hasAvailable = sessions.some(session =>
+        String(session.Estado_Sesion || "").toLowerCase() === "activa" &&
+        !isSessionOccupied(session.Sesion_ID)
+      );
+
+      if (state.adminFilter === "registered") return hasReservation;
+      if (state.adminFilter === "available") return hasAvailable;
+      if (state.adminFilter === "empty") return !hasReservation;
+      return true;
+    }
+
+    function getAdminFilterLabel() {
+      const labels = {
+        all: "All dates",
+        registered: "Dates with reservations",
+        available: "Dates with available sessions",
+        empty: "Dates with no reservations"
+      };
+      return labels[state.adminFilter] || labels.all;
+    }
+
+    function toggleSession(session) {
+      const dateKey = session.Fecha_Key || dateToKey(session.Fecha);
+      const current = state.selectedByDate.get(dateKey);
+      if (current?.Sesion_ID === session.Sesion_ID) {
+        state.selectedByDate.delete(dateKey);
+      } else {
+        state.selectedByDate.set(dateKey, session);
+      }
+      renderSchedule();
+    }
+
+    function clearSelection() {
+      state.selectedByDate.clear();
+      renderSchedule();
+    }
+
+    function openConfirmModal() {
+      if (!state.selectedPerson) {
+        showStatus("Please select your name before saving.", "error");
+        return;
+      }
+      const selections = getSelections();
+      if (!selections.length) {
+        showStatus("Please select at least one reservation date.", "error");
+        return;
+      }
+
+      els.confirmMessage.textContent = `Do you want to confirm the ART 2026 reservations for ${selections.map(s => formatShortDate(s.Fecha_Key)).join(", ")}?`;
+      els.confirmList.innerHTML = "";
+      selections.forEach(session => {
+        const li = document.createElement("li");
+        li.textContent = `${formatShortDate(session.Fecha_Key)} - ${getSalon(session)} - ${session.Hora_Inicio} - ${getLocation(session)}`;
+        els.confirmList.appendChild(li);
+      });
+      els.modal.style.display = "flex";
+    }
+
+    function closeConfirmModal() {
+      els.modal.style.display = "none";
+    }
+
+    async function submitReservation() {
+      const selections = getSelections();
+      const payload = {
+        action: "submitReservation",
+        personaId: state.selectedPerson.Persona_ID,
+        selectedSessionIds: selections.map(s => s.Sesion_ID),
+        clientTimestamp: new Date().toISOString()
+      };
+
+      els.yesConfirmBtn.disabled = true;
+      showStatus("Validating and saving your reservation...");
+
+      try {
+        const result = await postReservation(payload);
+        if (!result.success) {
+          throw new Error(result.message || "One or more selected sessions are no longer available.");
+        }
+        closeConfirmModal();
+        showStatus("Your ART 2026 reservation has been successfully registered. A confirmation email will be sent to the email address on file.", "success");
+        state.selectedByDate.clear();
+        if (result.data) {
+          state.inscripciones = normalizeArray(result.data.inscripciones || state.inscripciones);
+        } else if (FLOW_GET_DATA_URL) {
+          const data = await getReservationData();
+          state.inscripciones = normalizeArray(data.inscripciones);
+        }
+        renderSchedule();
+      } catch (error) {
+        console.error(error);
+        closeConfirmModal();
+        showStatus(error.message || "The reservation could not be saved. Please refresh and try again.", "error");
+        if (FLOW_GET_DATA_URL) {
+          try {
+            const data = await getReservationData();
+            state.inscripciones = normalizeArray(data.inscripciones);
+            renderSchedule();
+          } catch (refreshError) {
+            console.error(refreshError);
+          }
+        }
+      } finally {
+        els.yesConfirmBtn.disabled = false;
+      }
+    }
+
+    async function postReservation(payload) {
+      if (!FLOW_SUBMIT_URL) {
+        return {
+          success: true,
+          message: "Demo reservation saved.",
+          data: {
+            inscripciones: [
+              ...state.inscripciones,
+              ...payload.selectedSessionIds.map((sessionId, index) => ({
+                Inscripcion_ID: `DEMO-${Date.now()}-${index}`,
+                Persona_ID: payload.personaId,
+                Sesion_ID: sessionId,
+                Fecha_Key: state.sesiones.find(s => s.Sesion_ID === sessionId)?.Fecha_Key,
+                Estado_Registro: "Confirmada"
+              }))
+            ]
+          }
+        };
+      }
+      const response = await fetch(FLOW_SUBMIT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error("SubmitReservation flow failed");
+      return response.json();
+    }
+
+    function updateSummary() {
+      const count = state.selectedByDate.size;
+      els.saveBtn.disabled = !state.selectedPerson || count === 0;
+      if (!count) {
+        els.selectionSummary.textContent = "No reservations selected yet.";
+        return;
+      }
+      const dates = getSelections().map(s => `${formatShortDate(s.Fecha_Key)} (${getSalon(s)})`);
+      els.selectionSummary.textContent = `${count} reservation${count > 1 ? "s" : ""} selected: ${dates.join(", ")}.`;
+    }
+
+    function ensureSelectedMonth() {
+      const options = getMonthOptions();
+      if (!options.length) {
+        state.selectedMonth = "";
+        return;
+      }
+      if (!options.some(month => month.key === state.selectedMonth)) {
+        state.selectedMonth = options[0].key;
+      }
+    }
+
+    function getMonthOptions() {
+      const sessions = state.sesiones.filter(session =>
+        state.adminMode || String(session.Estado_Sesion || "").toLowerCase() === "activa"
+      );
+      const months = new Map();
+      sessions.forEach(session => {
+        const dateKey = session.Fecha_Key || dateToKey(session.Fecha);
+        const monthKey = getMonthKey(dateKey);
+        if (!monthKey || months.has(monthKey)) return;
+        months.set(monthKey, {
+          key: monthKey,
+          name: formatMonth(dateKey),
+          sortValue: monthKey
+        });
+      });
+      return Array.from(months.values()).sort((a, b) => a.sortValue.localeCompare(b.sortValue));
+    }
+
+    function groupSessions(sessions) {
+      const output = {};
+      sessions
+        .slice()
+        .sort((a, b) => String(a.Fecha_Key || a.Fecha).localeCompare(String(b.Fecha_Key || b.Fecha)))
+        .forEach(session => {
+          const dateKey = session.Fecha_Key || dateToKey(session.Fecha);
+          const monthLabel = formatMonth(dateKey);
+          output[monthLabel] ||= {};
+          output[monthLabel][dateKey] ||= [];
+          output[monthLabel][dateKey].push(session);
+        });
+      return output;
+    }
+
+    function groupByDate(sessions) {
+      return sessions
+        .slice()
+        .sort((a, b) => String(a.Fecha_Key || a.Fecha).localeCompare(String(b.Fecha_Key || b.Fecha)))
+        .reduce((output, session) => {
+          const dateKey = session.Fecha_Key || dateToKey(session.Fecha);
+          output[dateKey] ||= [];
+          output[dateKey].push(session);
+          return output;
+        }, {});
+    }
+
+    function getSessionsForSelectedMonth() {
+      return state.sesiones.filter(session =>
+        getMonthKey(session.Fecha_Key || dateToKey(session.Fecha)) === state.selectedMonth
+      );
+    }
+
+    function isSessionOccupied(sessionId) {
+      return state.inscripciones.some(i =>
+        String(i.Sesion_ID) === String(sessionId) &&
+        String(i.Estado_Registro || "").toLowerCase() === "confirmada"
+      );
+    }
+
+    function getConfirmedReservation(sessionId) {
+      return state.inscripciones.find(i =>
+        String(i.Sesion_ID) === String(sessionId) &&
+        String(i.Estado_Registro || "").toLowerCase() === "confirmada"
+      );
+    }
+
+    function getReservationPerson(reservation) {
+      const person = state.personas.find(p => String(p.Persona_ID) === String(reservation.Persona_ID)) || {};
+      return {
+        name: reservation.Nombre_Completo || reservation.Nombre || getPersonName(person) || "Name not available",
+        email: reservation.Email || person.Email || "Email not available",
+        position: reservation.Cargo || person.Cargo || "Position not available",
+        area: reservation["Área"] || reservation.Area || getArea(person) || ""
+      };
+    }
+
+    function getSalon(session) {
+      return session["Salón"] || session.Salon || "Room";
+    }
+
+    function getLocation(session) {
+      return session["Ubicación"] || session.Ubicacion || session.Lugar || "";
+    }
+
+    function getDayName(dateKey) {
+      const date = new Date(`${dateKey}T00:00:00`);
+      if (Number.isNaN(date.getTime())) return "";
+      return date.toLocaleDateString("en-US", { weekday: "long" });
+    }
+
+    function getSelections() {
+      return Array.from(state.selectedByDate.values())
+        .sort((a, b) => String(a.Fecha_Key || a.Fecha).localeCompare(String(b.Fecha_Key || b.Fecha)));
+    }
+
+    function showStatus(message, type = "") {
+      els.status.textContent = message;
+      els.status.className = `status ${type}`;
+      els.status.style.display = message ? "block" : "none";
+    }
+
+    function normalizeArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function getPersonName(person) {
+      return person.Nombre_Completo || person.Nombre || "";
+    }
+
+    function getArea(person) {
+      return person["Área"] || person.Area || "";
+    }
+
+    function dateToKey(value) {
+      if (!value) return "";
+      if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) return value.slice(0, 10);
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? String(value) : date.toISOString().slice(0, 10);
+    }
+
+    function getMonthKey(dateKey) {
+      if (!dateKey || !/^\d{4}-\d{2}/.test(String(dateKey))) return "";
+      return String(dateKey).slice(0, 7);
+    }
+
+    function formatMonth(dateKey) {
+      const date = new Date(`${dateKey}T00:00:00`);
+      if (Number.isNaN(date.getTime())) return "Schedule";
+      return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    }
+
+    function formatShortDate(dateKey) {
+      const date = new Date(`${dateKey}T00:00:00`);
+      if (Number.isNaN(date.getTime())) return dateKey;
+      const day = date.getDate();
+      const month = date.toLocaleDateString("en-US", { month: "long" });
+      return `${day} ${month}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
